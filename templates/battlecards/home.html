@@ -10,7 +10,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-    <link rel="stylesheet" href="{% static 'budgetbuddy/css/styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'battlecards\css\style.css' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     
 </head>
@@ -19,12 +19,66 @@
     <div class="container my-4">
         <h3>Battle Cards</h3>
     </div>
+
+    <div class="section">
+        Computers Cards
+        <div class="pokemon_card_container">
+            {% for range in range_5 %}
+                <div class="card bg-success-subtle computer_card" style="width: 18rem;">
+                    test
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="section"  id="chosen_cards_container">
+    </div>
+
+    <div  class="section" id="users_cards_container">
+        Your Cards
+
+        <div class="pokemon_card_container">
+            {% for pokemon in users_pokemon %}
+                <div class="card users_card" style="width: 18rem;">
+                    <h5 class="card-title text-center">{{ pokemon.name|capfirst }} {{pokemon.id}}</h5>
+                    <img src="{{ pokemon.sprites.front_shiny }}" alt="{{ pokemon.name }}">
+                    <div class="card-body">
+                        <h6 class="card-title">Height: {{ pokemon.height }} | Weight: {{ pokemon.weight }}</h6>
+                        <p>Stats:
+                            <ul>
+                                {% for s in pokemon.stats %}
+                                    <li>{{ s.stat.name|capfirst }}: {{ s.base_stat }}</li>
+                                {% endfor %}
+                            </ul>
+                        </p>
+                        <a href="{% url 'battlecards:select_card' pokemon.id %}" class="btn btn-primary d-block mx-auto select_card_btn">Select Card</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
   {% endblock %}
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   
   {% block scripts %}
+  <script>
+    document.querySelectorAll('.select_card_btn').forEach(button => {
+        button.addEventListener('click', function(e){
+            e.preventDefault();
+            const url = this.href;
+
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('chosen_cards_container').innerHTML = html;
+                })
+                .catch(err => console.error("AJAX error:", err));
+        });
+    });
+    </script>
   {% endblock %}
 </body>
 </html>

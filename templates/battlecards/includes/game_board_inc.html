@@ -1,0 +1,35 @@
+{% load static %}
+
+<div class="pokemon_card_container">
+    <div class="card users_card" style="width: 18rem;">
+        <h5 class="card-title text-center">{{ users_card.name|capfirst }} {{users_card.id}}</h5>
+        <img src="{{ users_card.sprites.front_shiny }}" alt="{{ users_card.name }}">
+        <div class="card-body">
+            <h6 class="card-title">Height: {{ users_card.height }} | Weight: {{ users_card.weight }}</h6>
+            <p>Stats:
+                <ul>
+                    {% for s in users_card.stats %}
+                        <li>{{ s.stat.name|capfirst }}: {{ s.base_stat }}</li>
+                    {% endfor %}
+                </ul>
+            </p>
+        </div>
+    </div>
+
+    <div class="card computer_card" style="width: 18rem;">
+        <div class="card users_card" style="width: 18rem;">
+            <h5 class="card-title text-center">{{ computers_card.name|capfirst }} {{computers_card.id}}</h5>
+            <img src="{{ computers_card.sprites.front_shiny }}" alt="{{ computers_card.name }}">
+            <div class="card-body">
+                <h6 class="card-title">Height: {{ computers_card.height }} | Weight: {{ computers_card.weight }}</h6>
+                <p>Stats:
+                    <ul>
+                        {% for s in computers_card.stats %}
+                            <li>{{ s.stat.name|capfirst }}: {{ s.base_stat }}</li>
+                        {% endfor %}
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
